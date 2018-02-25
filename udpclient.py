@@ -31,6 +31,8 @@ while (1):
         #print("Server Reported Time : " + sentdatetime.strftime("%Y-%m-%d %H:%M:%S.%f"))
         diff = timenow - sentdatetime
         print('forwardlatency=' + reply.split(',')[0] +",reverselatency=" + str(diff.total_seconds()*1000))
+        msg = "Done," +str(diff.total_seconds()*1000)
+        s.sendto(msg, (host,port))
         time.sleep(2)
     except socket.error, msg:
         print 'Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
