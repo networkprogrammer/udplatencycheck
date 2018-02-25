@@ -27,20 +27,23 @@ while 1:
     # receive data from client (data, addr)
     d = s.recvfrom(1024)
     data = d[0]
-    timenow = datetime.datetime.utcnow()
-    sentdatetime = datetime.datetime.strptime(data,"%Y-%m-%d %H:%M:%S.%f")
-    print("Server Reported Time :" + timenow.strftime("%Y-%m-%d %H:%M:%S.%f"))
-    print("Client Reported Time : " + sentdatetime.strftime("%Y-%m-%d %H:%M:%S.%f"))
-    diff = timenow - sentdatetime
-    print("Time Differenece " + str(diff.total_seconds()*1000))
-    addr = d[1]
+    if "Done" in data:
+        print("ServerToClient " + data.split(',')[1])
+    else:
+        timenow = datetime.datetime.utcnow()
+        sentdatetime = datetime.datetime.strptime(data,"%Y-%m-%d %H:%M:%S.%f")
+        #print("Server Reported Time :" + timenow.strftime("%Y-%m-%d %H:%M:%S.%f"))
+        #print("Client Reported Time : " + sentdatetime.strftime("%Y-%m-%d %H:%M:%S.%f"))
+        diff = timenow - sentdatetime
+        print("ClientToServer " + str(diff.total_seconds()*1000))
+        addr = d[1]
 
-    if not data:
-        break
-    timenow = datetime.datetime.utcnow()
-    reply = str(diff.total_seconds() * 1000) + "," + timenow.strftime("%Y-%m-%d %H:%M:%S.%f")
+        if not data:
+            break
+        timenow = datetime.datetime.utcnow()
+        reply = str(diff.total_seconds() * 1000) + "," + timenow.strftime("%Y-%m-%d %H:%M:%S.%f")
 
-    s.sendto(reply, addr)
-    print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
+        s.sendto(reply, addr)
+        print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
 
 s.close()
