@@ -26,14 +26,11 @@ while (1):
         timenow = datetime.datetime.utcnow()
         reply = d[0]
         addr = d[1]
-
-        print 'Server reply : ' + reply.split(',')[0]
-
         sentdatetime = datetime.datetime.strptime(reply.split(',')[1], "%Y-%m-%d %H:%M:%S.%f")
-        print("Client Reported Time :" + timenow.strftime("%Y-%m-%d %H:%M:%S.%f"))
-        print("Server Reported Time : " + sentdatetime.strftime("%Y-%m-%d %H:%M:%S.%f"))
+        #print("Client Reported Time :" + timenow.strftime("%Y-%m-%d %H:%M:%S.%f"))
+        #print("Server Reported Time : " + sentdatetime.strftime("%Y-%m-%d %H:%M:%S.%f"))
         diff = timenow - sentdatetime
-        print("Time Difference " + str(diff.total_seconds()*1000))
+        print('forwardlatency=' + reply.split(',')[0] +",reverselatency=" + str(diff.total_seconds()*1000))
         time.sleep(2)
     except socket.error, msg:
         print 'Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
